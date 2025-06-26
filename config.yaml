@@ -1,0 +1,39 @@
+# ffufai configuration file
+providers:
+  # OpenAI configuration
+  openai:
+    api_key: ""
+    model: "gpt-4o"
+    base_url: "https://api.openai.com/v1"
+    
+  # Anthropic configuration  
+  anthropic:
+    api_key: ""
+    model: "claude-3-5-sonnet-20241022"
+    
+  # Ollama configuration
+  ollama:
+    base_url: "http://localhost:11434"
+    model: "llama3.2"
+    
+  # OpenRouter configuration
+  openrouter:
+    api_key: ""
+    model: "openai/gpt-4o"
+    base_url: "https://openrouter.ai/api/v1"
+    site_url: ""
+    site_name: ""
+
+# Default provider to use
+default_provider: "openai"
+
+# ffuf settings
+ffuf:
+  path: "ffuf"
+  max_extensions: 4
+  
+# AI settings
+ai:
+  temperature: 0
+  max_tokens: 1000
+  timeout: 30 

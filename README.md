@@ -2,123 +2,133 @@
 
 <img src="https://github.com/user-attachments/assets/1f9ce2d7-8f9d-4746-bad4-acfccad74900" alt="ffufai_logo" width="400">
 
-# `ffufai`
+# `InteliFuzz`
 
-![GitHub top language](https://img.shields.io/github/languages/top/jthack/ffufai)
-![GitHub last commit](https://img.shields.io/github/last-commit/jthack/ffufai)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 
 <p class="align center">
 
-ffufai is an AI-powered wrapper for the popular web fuzzer ffuf. It automatically suggests file extensions for fuzzing based on the target URL and its headers, using either OpenAI's GPT or Anthropic's Claude AI models.
+InteliFuzz - умная AI-powered обёртка для веб-фаззера ffuf. Автоматически анализирует цель и предлагает оптимальные расширения файлов для фаззинга, используя силу искусственного интеллекта от ведущих провайдеров.
 
 </p>
 
 </div>
 
-## Features
-<img width="600  " alt="image" src="https://github.com/user-attachments/assets/0384d4f0-3a07-48d9-9805-ea1e76b6b693">
+## 🚀 Отличия от оригинала
 
-- Seamlessly integrates with ffuf
-- Automatically suggests relevant file extensions for fuzzing
-- Supports both OpenAI and Anthropic AI models
-- Passes through all ffuf parameters
+Этот проект является форком [jthack/ffufai](https://github.com/jthack/ffufai) с существенными улучшениями:
 
-## Prerequisites
+- **🎯 Поддержка 4 AI-провайдеров** вместо 2 (добавлены Ollama и OpenRouter)
+- **⚙️ YAML-конфигурация** с интерактивной настройкой
+- **🏠 Локальные модели** через Ollama (бесплатно)
+- **🌐 200+ моделей** через OpenRouter
+- **🔧 Гибкие настройки** (temperature, tokens, timeout)
+- **📝 Интерактивный мастер** настройки (`--setup`)
+- **🔄 Переключение провайдеров** на лету
+- **📊 Улучшенная обработка ошибок** и логирование
+- **🧩 Модульная архитектура** для легкого расширения
+
+## Особенности
+
+<img width="600" alt="image" src="https://github.com/user-attachments/assets/0384d4f0-3a07-48d9-9805-ea1e76b6b693">
+
+- **Множественные AI-провайдеры**: OpenAI, Anthropic Claude, Ollama (локально), OpenRouter
+- **Управление конфигурацией**: YAML-конфиг с интерактивной настройкой
+- **Интеграция с ffuf**: Пропускает все параметры ffuf без изменений
+- **Умные предложения**: Контекстно-зависимые рекомендации расширений файлов
+- **Гибкая аутентификация**: API-ключи, переменные окружения, локальные модели
+
+## Требования
 
 - Python 3.6+
-- ffuf (installed and accessible in your PATH)
-- An OpenAI API key or Anthropic API key
+- ffuf (установлен и доступен в PATH)
+- Хотя бы один настроенный AI-провайдер:
+  - API-ключ OpenAI
+  - API-ключ Anthropic
+  - Ollama, запущенная локально
+  - API-ключ OpenRouter
 
-## Installation
+## Быстрый старт
 
-1. Clone this repository:
-   ```
-   git clone https://github.com/jthack/ffufai
-   cd ffufai
-   ```
+```bash
+# 1. Клонируйте и установите
+git clone https://github.com/cansolele/intellifuzz
+cd intellifuzz
+pip install -r requirements.txt
 
-2. Install the required Python packages:
-   ```
-   pip install requests openai anthropic
-   ```
+# 2. Настройте провайдеры
+python intellifuzz.py --setup
 
-3. Make the script executable:
-   ```
-   chmod +x ffufai.py
-   ```
-
-4. (Optional) To use ffufai from anywhere, you can create a symbolic link in a directory that's in your PATH. For example:
-   ```
-   sudo ln -s /full/path/to/ffufai.py /usr/local/bin/ffufai
-   ```
-   Replace "/full/path/to/ffufai.py" with the actual full path to where you cloned the repository.
-
-5. Set up your API key as an environment variable:
-   For OpenAI:
-   ```
-   export OPENAI_API_KEY='your-api-key-here'
-   ```
-   Or for Anthropic:
-   ```
-   export ANTHROPIC_API_KEY='your-api-key-here'
-   ```
-
-   You can add these lines to your `~/.bashrc` or `~/.zshrc` file to make them permanent.
-
-## Usage
-
-Use ffufai just like you would use ffuf, but replace `ffuf` with `python3 ffufai.py` (or just `ffufai` if you've created the symbolic link):
-
-```
-python3 ffufai.py -u https://example.com/FUZZ -w /path/to/wordlist.txt
+# 3. Начните фаззинг
+python intellifuzz.py https://target.com/FUZZ
 ```
 
-Or if you've created the symbolic link:
+📖 **Документация:**
+- [🔧 Установка](docs/INSTALL.md) - детальная инструкция по установке
+- [⚙️ Конфигурация](docs/CONFIG.md) - настройка провайдеров и параметров  
+- [💡 Примеры](docs/EXAMPLES.md) - практические примеры использования
 
+## Использование
+
+```bash
+# Базовое использование
+python intellifuzz.py https://target.com/FUZZ
+
+# Выбор AI-провайдера
+python intellifuzz.py --provider ollama https://target.com/FUZZ
+
+# Ограничение количества расширений
+python intellifuzz.py --max-extensions 3 https://target.com/FUZZ
+
+# Передача параметров ffuf
+python intellifuzz.py https://target.com/FUZZ -w custom-wordlist.txt -H "Authorization: Bearer token"
 ```
-ffufai -u https://example.com/FUZZ -w /path/to/wordlist.txt
+
+## Поддерживаемые провайдеры
+
+- **OpenAI** - API-ключ, платно
+- **Anthropic Claude** - API-ключ, платно  
+- **Ollama** - локально, бесплатно
+- **OpenRouter** - API-ключ, доступ к 200+ моделям
+
+## Параметры
+
+**Специфичные для InteliFuzz:**
+- `--setup`: Запуск интерактивной конфигурации
+- `--provider`: Выбор AI-провайдера (openai|anthropic|ollama|openrouter)
+- `--max-extensions`: Максимальное количество предлагаемых расширений
+
+**Стандартные параметры ffuf:**
+Все остальные параметры передаются напрямую в ffuf (-w, -H, -mc, -fc, -t и др.)
+
+## Примеры
+
+### Примеры применения
+
+**🏠 Локальный AI (Ollama):**
+```bash
+ollama pull llama3.2  # установка модели
+python intellifuzz.py --provider ollama https://target.com/FUZZ
 ```
 
-ffufai will automatically suggest extensions based on the URL and add them to the ffuf command.
+**🌐 Множество моделей (OpenRouter):**
+```bash
+python intellifuzz.py --provider openrouter https://api.target.com/FUZZ
+```
 
-## Parameters
+**🔧 Интеграция с ffuf:**
+```bash
+python intellifuzz.py https://target.com/FUZZ -w custom-wordlist.txt -H "Authorization: Bearer token" -mc 200,301,302
+```
 
-ffufai accepts all the parameters that ffuf does, plus a few additional ones:
+## Заметки
 
-- `--ffuf-path`: Specifies the path to the ffuf executable. Default is 'ffuf'.  
-  Example: `ffufai --ffuf-path /usr/local/bin/ffuf -u https://example.com/FUZZ -w wordlist.txt`
+- Ключевое слово FUZZ должно быть в конце пути URL для лучших результатов
+- Переменные окружения (OPENAI_API_KEY и др.) переопределяют конфигурационный файл
+- Ollama требует локальной установки и запущенного сервиса
+- OpenRouter предоставляет доступ к 200+ моделям через один API
 
-- `--max-extensions`: Sets the maximum number of extensions to suggest. Default is 4.  
-  Example: `ffufai --max-extensions 6 -u https://example.com/FUZZ -w wordlist.txt`
 
-- `-u`: Specifies the target URL. This parameter is required and should include the FUZZ keyword.  
-  Example: `ffufai -u https://example.com/FUZZ -w wordlist.txt`
+## Благодарности
 
-- `-w`: Specifies the wordlist to use for fuzzing. This is a standard ffuf parameter.  
-  Example: `ffufai -u https://example.com/FUZZ -w /path/to/wordlist.txt`
-
-All other ffuf parameters can be used as normal. For a full list of ffuf parameters, refer to the ffuf documentation.
-
-## Notes
-
-- ffufai requires the FUZZ keyword to be at the end of the URL path for accurate extension suggestion. It will warn you if this is not the case.
-- All ffuf parameters are passed through to ffuf, so you can use any ffuf option with ffufai.
-- If both OpenAI and Anthropic API keys are set, ffufai will prefer the OpenAI key.
-
-HUGE Shoutout to zlz, aka Sam Curry, for the amazing idea to make this project. He suggested it and 2 hours later, here it is :)    
-<img width="744" alt="image" src="https://github.com/user-attachments/assets/9f914cc4-fe5f-4dbc-b7d9-548473ea2134">
-
-## Troubleshooting
-
-- If you encounter a "command not found" error, make sure you're using `python3 ffufai.py` or that you've correctly set up the symbolic link.
-- If you get an API key error, ensure you've correctly set up your OPENAI_API_KEY or ANTHROPIC_API_KEY environment variable.
-- If you see "import: command not found" errors, it means the script is being interpreted by the shell instead of Python. Make sure you're running it with `python3 ffufai.py` or that the shebang line at the top of the script is correct.
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
+Форк [jthack/ffufai](https://github.com/jthack/ffufai). Оригинальная концепция от zlz/Sam Curry. Улучшено с поддержкой множественных провайдеров и управлением конфигурацией.
